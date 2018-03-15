@@ -67,17 +67,24 @@ exit(0);
 function getColors($value)
 {
 	$res = json_decode(file_get_contents('https://yandex.ru/search/wizardsjson?type=colors&text=' . $value));
-	
-	if (!isset($res[0])) {
-		return [];
-	}
 
-	$res = $res[0];
-	if (!isset($res->next)) {
-		return [];
+	try {
+
+		if (!isset($res[0])) {
+			return [];
+		}
+
+		$res = $res[0];
+		if (!isset($res->next)) {
+			return [];
+		}
+
+		return $res->next;
+	} catch(Exception $err) {
+		var_dump($res);
+		var_dump($err);
+		throw $err;
 	}
-	
-	return $res->next;
 }
 
 
